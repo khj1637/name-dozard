@@ -11,7 +11,6 @@
   <meta property="og:url" content="https://name.dozard.com">
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="assets/css/style.css">
-  <!-- AdSense 자동광고 -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5636953164692974" crossorigin="anonymous"></script>
   <script>
     (adsbygoogle = window.adsbygoogle || []).push({
@@ -19,21 +18,95 @@
       enable_page_level_ads: true
     });
   </script>
+  <style>
+    /* 성별 버튼 개선 */
+    .gender-btns {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .gender-btn {
+      flex: 1;
+      height: 44px;
+      border-radius: 12px;
+      border: 2px solid rgba(255,107,157,0.2);
+      background: var(--bg);
+      font-size: 13px;
+      font-weight: 700;
+      font-family: 'Noto Sans KR', sans-serif;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      color: #999;
+    }
+    .gender-btn:active { transform: scale(0.97); }
+    .gender-btn.active-M {
+      border-color: #48CAE4;
+      background: rgba(72,202,228,0.12);
+      color: #0077B6;
+      box-shadow: 0 0 0 3px rgba(72,202,228,0.15);
+    }
+    .gender-btn.active-F {
+      border-color: var(--pink);
+      background: rgba(255,107,157,0.12);
+      color: var(--pink);
+      box-shadow: 0 0 0 3px rgba(255,107,157,0.15);
+    }
+    /* 이름 입력 전체 너비 */
+    .name-input {
+      width: 100%;
+      height: 56px;
+      border: 2px solid rgba(255,107,157,0.2);
+      border-radius: var(--radius-sm);
+      padding: 0 18px;
+      font-size: 22px;
+      font-family: 'Noto Sans KR', sans-serif;
+      font-weight: 700;
+      color: var(--dark);
+      background: var(--bg);
+      outline: none;
+      transition: all 0.2s;
+      letter-spacing: 4px;
+      box-sizing: border-box;
+    }
+    .name-input:focus {
+      border-color: var(--pink);
+      background: white;
+      box-shadow: 0 0 0 4px rgba(255,107,157,0.1);
+    }
+    .name-input::placeholder {
+      color: #ccc;
+      font-weight: 400;
+      letter-spacing: 0;
+      font-size: 14px;
+    }
+    /* 입력 오류 안내 */
+    .input-hint {
+      font-size: 12px;
+      color: #FF6B9D;
+      margin-top: 4px;
+      min-height: 16px;
+      display: none;
+    }
+    .input-hint.show { display: block; }
+  </style>
 </head>
 <body>
 
-<!-- 파티클 컨테이너 -->
 <div class="particles" id="particles"></div>
 
-<!-- 인터스티셜 광고 오버레이 -->
+<!-- 인터스티셜 오버레이 -->
 <div class="interstitial-overlay" id="interstitialOverlay">
   <div class="interstitial-inner">
     <div class="interstitial-timer" id="interstitialTimer">5초 후 결과 확인 가능 ⏱️</div>
-    <div style="text-align:center; padding:40px 0; color:#aaa; font-size:14px;">
-      잠깐만요! 광고가 로딩 중이에요 😊
+    <div style="text-align:center; padding:40px 20px; color:#bbb; font-size:15px; line-height:1.8;">
+      ✨ 잠깐만요!<br>광고를 보고 결과를 확인해요 😊
     </div>
     <button class="interstitial-skip" id="interstitialSkip" onclick="goToResult()">
-      결과 확인하기 💕
+      💕 결과 확인하기
     </button>
   </div>
 </div>
@@ -49,61 +122,63 @@
 
   <!-- 입력 카드 -->
   <div class="card">
+
     <!-- 내 이름 -->
     <div class="section-label">👤 내 이름</div>
-    <div class="input-group">
-      <div class="input-row">
-        <input
-          type="text"
-          class="name-input"
-          id="name1"
-          placeholder="성 포함 3글자 이상"
-          maxlength="6"
-          oninput="onNameInput(1)"
-        >
-        <div class="gender-btns">
-          <button class="gender-btn active-M" id="g1M" onclick="setGender(1,'M')">👦</button>
-          <button class="gender-btn" id="g1F" onclick="setGender(1,'F')">👧</button>
-        </div>
-      </div>
-      <div class="strokes-preview" id="strokes1"></div>
+    <input
+      type="text"
+      class="name-input"
+      id="name1"
+      placeholder="성 포함 3글자 이상 입력"
+      maxlength="6"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+    >
+    <div class="input-hint" id="hint1">⚠️ 한글 이름만 입력할 수 있어요</div>
+    <div class="gender-btns">
+      <button class="gender-btn active-M" id="g1M" onclick="setGender(1,'M')">👦 남자</button>
+      <button class="gender-btn" id="g1F" onclick="setGender(1,'F')">👧 여자</button>
     </div>
+    <div class="strokes-preview" id="strokes1" style="margin-top:10px;"></div>
 
     <!-- VS -->
-    <div class="vs-divider">
+    <div class="vs-divider" style="margin: 20px 0;">
       <span class="vs-badge">VS</span>
     </div>
 
     <!-- 상대 이름 -->
     <div class="section-label">💝 상대 이름</div>
-    <div class="input-group">
-      <div class="input-row">
-        <input
-          type="text"
-          class="name-input"
-          id="name2"
-          placeholder="성 포함 3글자 이상"
-          maxlength="6"
-          oninput="onNameInput(2)"
-        >
-        <div class="gender-btns">
-          <button class="gender-btn" id="g2M" onclick="setGender(2,'M')">👦</button>
-          <button class="gender-btn active-F" id="g2F" onclick="setGender(2,'F')">👧</button>
-        </div>
-      </div>
-      <div class="strokes-preview" id="strokes2"></div>
+    <input
+      type="text"
+      class="name-input"
+      id="name2"
+      placeholder="성 포함 3글자 이상 입력"
+      maxlength="6"
+      autocomplete="off"
+      autocorrect="off"
+      autocapitalize="off"
+      spellcheck="false"
+    >
+    <div class="input-hint" id="hint2">⚠️ 한글 이름만 입력할 수 있어요</div>
+    <div class="gender-btns">
+      <button class="gender-btn" id="g2M" onclick="setGender(2,'M')">👦 남자</button>
+      <button class="gender-btn active-F" id="g2F" onclick="setGender(2,'F')">👧 여자</button>
     </div>
+    <div class="strokes-preview" id="strokes2" style="margin-top:10px;"></div>
 
-    <!-- 궁합 타입 표시 -->
-    <div class="compat-type" id="compatType">💕 연애 궁합</div>
+    <!-- 궁합 타입 -->
+    <div class="compat-type" id="compatType" style="margin-top:20px;">💕 연애 궁합</div>
 
     <!-- 계산 버튼 -->
-    <button class="calc-btn" id="calcBtn" onclick="startCalc()" disabled>
+    <button class="calc-btn" id="calcBtn" onclick="startCalc()" disabled style="margin-top:12px;">
       ✨ 궁합 계산하기
     </button>
+
   </div>
 
-  <!-- 계산 애니메이션 섹션 -->
+  <!-- 계산 애니메이션 -->
   <div class="animation-section" id="animSection">
     <div class="loading-text" id="loadingText">
       <span>운명의 실을 계산하는 중... 🧵</span>
@@ -126,6 +201,9 @@
   let gender1 = 'M';
   let gender2 = 'F';
   let calcResult = null;
+  // 조합 중 여부 추적
+  let composing1 = false;
+  let composing2 = false;
 
   const LOADING_TEXTS = [
     '운명의 실을 계산하는 중... 🧵',
@@ -136,21 +214,99 @@
   ];
 
   window.addEventListener('DOMContentLoaded', () => {
+    setupInput(1);
+    setupInput(2);
+
     const params = getUrlParams();
     if (params.name1) {
       document.getElementById('name1').value = params.name1;
       setGender(1, params.gender1);
-      onNameInput(1);
+      updateStrokes(1);
     }
     if (params.name2) {
       document.getElementById('name2').value = params.name2;
       setGender(2, params.gender2);
-      onNameInput(2);
+      updateStrokes(2);
     }
     if (params.name1 && params.name2) {
       setTimeout(startCalc, 500);
     }
   });
+
+  // 입력 이벤트 설정 — 조합 처리 핵심
+  function setupInput(person) {
+    const input = document.getElementById(`name${person}`);
+
+    // 조합 시작 (한글 자모 조합 중)
+    input.addEventListener('compositionstart', () => {
+      if (person === 1) composing1 = true;
+      else composing2 = true;
+    });
+
+    // 조합 완료
+    input.addEventListener('compositionend', () => {
+      if (person === 1) composing1 = false;
+      else composing2 = false;
+      filterAndUpdate(person);
+    });
+
+    // 일반 입력 (조합 중이 아닐 때만 처리)
+    input.addEventListener('input', () => {
+      const isComposing = person === 1 ? composing1 : composing2;
+      if (!isComposing) {
+        filterAndUpdate(person);
+      }
+    });
+  }
+
+  // 필터링 + 미리보기 업데이트
+  function filterAndUpdate(person) {
+    const input = document.getElementById(`name${person}`);
+    const hint = document.getElementById(`hint${person}`);
+    const original = input.value;
+
+    // 한글만 허용 (완성형 + 자모 모두)
+    const filtered = original.replace(/[^가-힣ㄱ-ㅎㅏ-ㅣ]/g, '');
+
+    // 비한글 입력 시 힌트 표시
+    if (original !== filtered && original.length > 0) {
+      hint.classList.add('show');
+      setTimeout(() => hint.classList.remove('show'), 2000);
+    }
+
+    if (input.value !== filtered) {
+      input.value = filtered;
+    }
+
+    updateStrokes(person);
+    checkCalcBtn();
+  }
+
+  // 획수 미리보기 업데이트
+  function updateStrokes(person) {
+    const input = document.getElementById(`name${person}`);
+    const preview = document.getElementById(`strokes${person}`);
+    // 완성형 한글만 획수 표시
+    const name = input.value.replace(/[^가-힣]/g, '');
+
+    preview.innerHTML = '';
+    if (name.length > 0) {
+      const strokes = getNameStrokes(name);
+      name.split('').forEach((char, i) => {
+        const chip = document.createElement('div');
+        chip.className = 'stroke-chip';
+        chip.innerHTML = `<span class="char">${char}</span>${strokes[i]}`;
+        preview.appendChild(chip);
+      });
+    }
+  }
+
+  function checkCalcBtn() {
+    // 완성형 한글만 카운트
+    const n1 = document.getElementById('name1').value.replace(/[^가-힣]/g, '');
+    const n2 = document.getElementById('name2').value.replace(/[^가-힣]/g, '');
+    document.getElementById('calcBtn').disabled = !(n1.length >= 3 && n2.length >= 3);
+  }
 
   function setGender(person, g) {
     if (person === 1) {
@@ -183,41 +339,17 @@
     }
   }
 
-  function onNameInput(person) {
-    const input = document.getElementById(`name${person}`);
-    const preview = document.getElementById(`strokes${person}`);
-    const name = input.value.replace(/[^가-힣]/g, '');
-    input.value = name;
-
-    preview.innerHTML = '';
-    if (name.length > 0) {
-      const strokes = getNameStrokes(name);
-      name.split('').forEach((char, i) => {
-        const chip = document.createElement('div');
-        chip.className = 'stroke-chip';
-        chip.innerHTML = `<span class="char">${char}</span>${strokes[i]}`;
-        preview.appendChild(chip);
-      });
-    }
-    checkCalcBtn();
-  }
-
-  function checkCalcBtn() {
-    const n1 = document.getElementById('name1').value;
-    const n2 = document.getElementById('name2').value;
-    const btn = document.getElementById('calcBtn');
-    btn.disabled = !(n1.length >= 3 && n2.length >= 3);
-  }
-
   function startCalc() {
-    const name1 = document.getElementById('name1').value;
-    const name2 = document.getElementById('name2').value;
+    // 완성형만 추출
+    const name1 = document.getElementById('name1').value.replace(/[^가-힣]/g, '');
+    const name2 = document.getElementById('name2').value.replace(/[^가-힣]/g, '');
     if (name1.length < 3 || name2.length < 3) return;
 
     calcResult = calcCompatibility(name1, name2);
 
     document.getElementById('animSection').classList.add('show');
     document.getElementById('resultBtnWrap').classList.remove('show');
+    document.getElementById('calcProcess').innerHTML = '';
 
     setTimeout(() => {
       document.getElementById('animSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -225,6 +357,7 @@
 
     let textIdx = 0;
     const loadingEl = document.getElementById('loadingText');
+    loadingEl.innerHTML = `<span>${LOADING_TEXTS[0]}</span>`;
     const textInterval = setInterval(() => {
       textIdx = (textIdx + 1) % LOADING_TEXTS.length;
       loadingEl.innerHTML = `<span>${LOADING_TEXTS[textIdx]}</span>`;
@@ -236,7 +369,7 @@
       document.getElementById('resultBtnWrap').classList.add('show');
       setTimeout(() => {
         document.getElementById('resultBtnWrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }, 100);
+      }, 200);
     });
   }
 
@@ -254,14 +387,12 @@
       const step = steps[rowIdx];
       const numRow = document.createElement('div');
       numRow.className = 'calc-row';
-      numRow.style.marginBottom = '0';
 
       step.forEach((num, i) => {
         const el = document.createElement('div');
         el.className = 'calc-num';
         if (rowIdx === 0) {
-          const n1len = name1.length;
-          el.classList.add(i < n1len ? 'name1' : 'name2');
+          el.classList.add(i < name1.length ? 'name1' : 'name2');
         }
         if (rowIdx === steps.length - 1) {
           el.classList.add('highlight');
@@ -286,26 +417,24 @@
             item.appendChild(line);
             bracketRow.appendChild(item);
             if (i < step.length - 2) {
-              const spacer = document.createElement('div');
-              spacer.className = 'bracket-item';
-              bracketRow.appendChild(spacer);
+              bracketRow.appendChild(document.createElement('div')).className = 'bracket-item';
             }
           }
           container.appendChild(bracketRow);
           setTimeout(() => bracketRow.classList.add('visible'), 50);
-          setTimeout(renderNextRow, 350);
+          setTimeout(renderNextRow, 380);
         }, 300);
       } else {
         setTimeout(renderNextRow, 300);
       }
     }
+
     renderNextRow();
   }
 
   function showInterstitial() {
     const overlay = document.getElementById('interstitialOverlay');
     overlay.classList.add('show');
-
     let count = 5;
     const timerEl = document.getElementById('interstitialTimer');
     const skipBtn = document.getElementById('interstitialSkip');
@@ -322,10 +451,9 @@
   }
 
   function goToResult() {
-    const name1 = document.getElementById('name1').value;
-    const name2 = document.getElementById('name2').value;
-    const score = calcResult.score;
-    window.location.href = `result.html?a=${encodeURIComponent(name1)}&b=${encodeURIComponent(name2)}&g1=${gender1}&g2=${gender2}&s=${score}`;
+    const name1 = document.getElementById('name1').value.replace(/[^가-힣]/g, '');
+    const name2 = document.getElementById('name2').value.replace(/[^가-힣]/g, '');
+    window.location.href = `result.html?a=${encodeURIComponent(name1)}&b=${encodeURIComponent(name2)}&g1=${gender1}&g2=${gender2}&s=${calcResult.score}`;
   }
 </script>
 </body>
