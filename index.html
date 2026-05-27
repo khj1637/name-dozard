@@ -11,8 +11,14 @@
   <meta property="og:url" content="https://name.dozard.com">
   <meta property="og:type" content="website">
   <link rel="stylesheet" href="assets/css/style.css">
-  <!-- AdSense -->
+  <!-- AdSense 자동광고 -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5636953164692974" crossorigin="anonymous"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-5636953164692974",
+      enable_page_level_ads: true
+    });
+  </script>
 </head>
 <body>
 
@@ -23,14 +29,9 @@
 <div class="interstitial-overlay" id="interstitialOverlay">
   <div class="interstitial-inner">
     <div class="interstitial-timer" id="interstitialTimer">5초 후 결과 확인 가능 ⏱️</div>
-    <!-- AdSense 인터스티셜 광고 -->
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-5636953164692974"
-         data-ad-slot="INTERSTITIAL_SLOT_ID"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <div style="text-align:center; padding:40px 0; color:#aaa; font-size:14px;">
+      잠깐만요! 광고가 로딩 중이에요 😊
+    </div>
     <button class="interstitial-skip" id="interstitialSkip" onclick="goToResult()">
       결과 확인하기 💕
     </button>
@@ -44,17 +45,6 @@
     <div class="header-badge">✨ 한글 획수 정통 계산법</div>
     <h1>이름 궁합<br>테스트 💕</h1>
     <p class="header-sub">우리 사이 몇 %일까? 지금 바로 확인해봐!</p>
-  </div>
-
-  <!-- 상단 배너 광고 -->
-  <div class="ad-banner">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-5636953164692974"
-         data-ad-slot="TOP_BANNER_SLOT_ID"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
   <!-- 입력 카드 -->
@@ -129,22 +119,10 @@
     <p style="margin-top:12px; font-size:12px; color:#aaa;">잠깐! 광고를 보고 결과를 확인하세요 😊</p>
   </div>
 
-  <!-- 하단 배너 광고 -->
-  <div class="ad-banner" style="margin-top:16px;">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-5636953164692974"
-         data-ad-slot="BOTTOM_BANNER_SLOT_ID"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-
 </div>
 
 <script src="assets/js/hangul.js"></script>
 <script>
-  // 상태
   let gender1 = 'M';
   let gender2 = 'F';
   let calcResult = null;
@@ -157,7 +135,6 @@
     '두근두근 계산 중... 💓'
   ];
 
-  // URL 파라미터로 이름 자동 입력
   window.addEventListener('DOMContentLoaded', () => {
     const params = getUrlParams();
     if (params.name1) {
@@ -175,7 +152,6 @@
     }
   });
 
-  // 성별 선택
   function setGender(person, g) {
     if (person === 1) {
       gender1 = g;
@@ -189,7 +165,6 @@
     updateCompatType();
   }
 
-  // 궁합 타입 업데이트
   function updateCompatType() {
     const el = document.getElementById('compatType');
     const type = `${gender1}-${gender2}`;
@@ -208,14 +183,12 @@
     }
   }
 
-  // 이름 입력 핸들러
   function onNameInput(person) {
     const input = document.getElementById(`name${person}`);
     const preview = document.getElementById(`strokes${person}`);
     const name = input.value.replace(/[^가-힣]/g, '');
     input.value = name;
 
-    // 획수 미리보기
     preview.innerHTML = '';
     if (name.length > 0) {
       const strokes = getNameStrokes(name);
@@ -226,8 +199,6 @@
         preview.appendChild(chip);
       });
     }
-
-    // 버튼 활성화 체크
     checkCalcBtn();
   }
 
@@ -238,7 +209,6 @@
     btn.disabled = !(n1.length >= 3 && n2.length >= 3);
   }
 
-  // 계산 시작
   function startCalc() {
     const name1 = document.getElementById('name1').value;
     const name2 = document.getElementById('name2').value;
@@ -246,16 +216,13 @@
 
     calcResult = calcCompatibility(name1, name2);
 
-    // 애니메이션 섹션 표시
     document.getElementById('animSection').classList.add('show');
     document.getElementById('resultBtnWrap').classList.remove('show');
 
-    // 스크롤
     setTimeout(() => {
       document.getElementById('animSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
 
-    // 로딩 텍스트 변경
     let textIdx = 0;
     const loadingEl = document.getElementById('loadingText');
     const textInterval = setInterval(() => {
@@ -263,21 +230,20 @@
       loadingEl.innerHTML = `<span>${LOADING_TEXTS[textIdx]}</span>`;
     }, 800);
 
-    // 계산 과정 렌더링
     renderCalcProcess(calcResult.steps, name1, name2, () => {
       clearInterval(textInterval);
       loadingEl.innerHTML = '<span>계산 완료! 결과를 확인해봐 💕</span>';
       document.getElementById('resultBtnWrap').classList.add('show');
+      setTimeout(() => {
+        document.getElementById('resultBtnWrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }, 100);
     });
   }
 
-  // 계산 과정 애니메이션 렌더링
   function renderCalcProcess(steps, name1, name2, onDone) {
     const container = document.getElementById('calcProcess');
     container.innerHTML = '';
-
     let rowIdx = 0;
-    const totalRows = steps.length * 2 - 1;
 
     function renderNextRow() {
       if (rowIdx >= steps.length) {
@@ -286,8 +252,6 @@
       }
 
       const step = steps[rowIdx];
-
-      // 숫자 행
       const numRow = document.createElement('div');
       numRow.className = 'calc-row';
       numRow.style.marginBottom = '0';
@@ -295,32 +259,25 @@
       step.forEach((num, i) => {
         const el = document.createElement('div');
         el.className = 'calc-num';
-
-        // 첫 번째 행 — 이름별 색상
         if (rowIdx === 0) {
           const n1len = name1.length;
           el.classList.add(i < n1len ? 'name1' : 'name2');
         }
-        // 마지막 행 하이라이트
         if (rowIdx === steps.length - 1) {
           el.classList.add('highlight');
         }
-
         el.textContent = num;
         numRow.appendChild(el);
       });
 
       container.appendChild(numRow);
       setTimeout(() => numRow.classList.add('visible'), 50);
-
       rowIdx++;
 
-      // 마지막 행이 아니면 브라켓 추가
       if (rowIdx < steps.length) {
         setTimeout(() => {
           const bracketRow = document.createElement('div');
           bracketRow.className = 'bracket-row';
-
           for (let i = 0; i < step.length - 1; i++) {
             const item = document.createElement('div');
             item.className = 'bracket-item';
@@ -328,15 +285,12 @@
             line.className = 'bracket-line';
             item.appendChild(line);
             bracketRow.appendChild(item);
-
-            // 마지막 아이템 여백
             if (i < step.length - 2) {
               const spacer = document.createElement('div');
               spacer.className = 'bracket-item';
               bracketRow.appendChild(spacer);
             }
           }
-
           container.appendChild(bracketRow);
           setTimeout(() => bracketRow.classList.add('visible'), 50);
           setTimeout(renderNextRow, 350);
@@ -345,11 +299,9 @@
         setTimeout(renderNextRow, 300);
       }
     }
-
     renderNextRow();
   }
 
-  // 인터스티셜 광고 표시
   function showInterstitial() {
     const overlay = document.getElementById('interstitialOverlay');
     overlay.classList.add('show');
@@ -369,7 +321,6 @@
     }, 1000);
   }
 
-  // 결과 페이지로 이동
   function goToResult() {
     const name1 = document.getElementById('name1').value;
     const name2 = document.getElementById('name2').value;

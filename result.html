@@ -10,22 +10,22 @@
   <meta property="og:image" content="https://name.dozard.com/assets/img/og.png">
   <meta property="og:url" content="https://name.dozard.com">
   <link rel="stylesheet" href="assets/css/style.css">
+  <!-- AdSense 자동광고 -->
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5636953164692974" crossorigin="anonymous"></script>
+  <script>
+    (adsbygoogle = window.adsbygoogle || []).push({
+      google_ad_client: "ca-pub-5636953164692974",
+      enable_page_level_ads: true
+    });
+  </script>
   <!-- 카카오 SDK -->
   <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.2/kakao.min.js" crossorigin="anonymous"></script>
 
   <style>
-    /* 하트 게이지 SVG 애니메이션 */
-    .heart-fill {
-      transition: stroke-dashoffset 1.5s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* 컨페티 */
     @keyframes confettiFall {
       0% { transform: translateY(-10px) rotate(0deg); opacity: 1; }
       100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
     }
-
     .confetti {
       position: fixed;
       width: 10px;
@@ -35,28 +35,13 @@
       z-index: 9998;
       pointer-events: none;
     }
-
-    /* 결과 카드 등장 */
     .result-card-animate {
       animation: resultCardIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
-
     @keyframes resultCardIn {
       from { transform: scale(0.8) translateY(30px); opacity: 0; }
       to { transform: scale(1) translateY(0); opacity: 1; }
     }
-
-    /* 점수 카운트업 */
-    .score-countup {
-      animation: scoreIn 0.5s ease;
-    }
-
-    @keyframes scoreIn {
-      from { transform: scale(0.5); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
-    }
-
-    /* 낮은점수 흔들기 */
     @keyframes shake {
       0%, 100% { transform: translateX(0); }
       20% { transform: translateX(-8px); }
@@ -64,15 +49,8 @@
       60% { transform: translateX(-6px); }
       80% { transform: translateX(6px); }
     }
-
     .shake { animation: shake 0.5s ease; }
-
-    /* 게이지 바 */
-    .gauge-wrap {
-      margin: 0 auto 20px;
-      width: 100%;
-    }
-
+    .gauge-wrap { margin: 0 auto 20px; width: 100%; }
     .gauge-bar-bg {
       background: #f0f0f0;
       border-radius: 100px;
@@ -80,7 +58,6 @@
       overflow: hidden;
       margin-bottom: 8px;
     }
-
     .gauge-bar-fill {
       height: 100%;
       border-radius: 100px;
@@ -89,7 +66,6 @@
       position: relative;
       overflow: hidden;
     }
-
     .gauge-bar-fill::after {
       content: '';
       position: absolute;
@@ -98,11 +74,7 @@
       background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
       animation: shimmer 2s infinite;
     }
-
-    @keyframes shimmer {
-      to { left: 100%; }
-    }
-
+    @keyframes shimmer { to { left: 100%; } }
     .gauge-score {
       text-align: right;
       font-family: 'Gaegu', cursive;
@@ -110,18 +82,7 @@
       font-weight: 700;
       color: var(--dark);
     }
-
-    /* 다시하기 */
-    .retry-section {
-      text-align: center;
-      margin-top: 8px;
-    }
-
-    /* 관련 콘텐츠 */
-    .related-section {
-      margin-top: 8px;
-    }
-
+    .related-section { margin-top: 8px; }
     .related-title {
       font-size: 13px;
       font-weight: 700;
@@ -129,12 +90,7 @@
       margin-bottom: 10px;
       text-align: center;
     }
-
-    .related-cards {
-      display: flex;
-      gap: 8px;
-    }
-
+    .related-cards { display: flex; gap: 8px; }
     .related-card {
       flex: 1;
       background: white;
@@ -148,9 +104,7 @@
       text-decoration: none;
       color: var(--dark);
     }
-
     .related-card:active { transform: scale(0.97); }
-
     .related-card .rc-emoji { font-size: 24px; margin-bottom: 6px; }
     .related-card .rc-title { font-size: 12px; font-weight: 700; }
     .related-card .rc-sub { font-size: 11px; color: var(--gray); }
@@ -158,7 +112,6 @@
 </head>
 <body>
 
-<!-- 파티클 컨테이너 -->
 <div class="particles" id="particles"></div>
 
 <div class="container">
@@ -169,31 +122,17 @@
     <h1 style="font-size:28px;">이름 궁합<br>결과 발표! 💕</h1>
   </div>
 
-  <!-- 상단 배너 광고 -->
-  <div class="ad-banner">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-5636953164692974"
-         data-ad-slot="RESULT_TOP_BANNER_SLOT_ID"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-
   <!-- 결과 카드 -->
   <div class="card result-card-animate" id="resultCard" style="display:none;">
 
-    <!-- 궁합 타입 -->
     <div class="result-type-badge" id="resultTypeBadge">💕 연애 궁합</div>
 
-    <!-- 이름 -->
     <div class="result-names" id="resultNames">
       <span id="rName1">-</span>
       <span class="connector">♥</span>
       <span id="rName2">-</span>
     </div>
 
-    <!-- 게이지 바 -->
     <div class="gauge-wrap">
       <div class="gauge-bar-bg">
         <div class="gauge-bar-fill" id="gaugeBar"></div>
@@ -201,16 +140,10 @@
       <div class="gauge-score" id="gaugeScore">0%</div>
     </div>
 
-    <!-- 이모지 -->
     <span class="result-emoji" id="resultEmoji">💕</span>
-
-    <!-- 등급 -->
     <div class="result-grade" id="resultGrade" style="color: var(--pink);">-</div>
-
-    <!-- 설명 -->
     <div class="result-desc" id="resultDesc">-</div>
 
-    <!-- 액션 버튼 -->
     <div class="action-btns">
       <button class="action-btn btn-kakao" onclick="onKakaoShare()">
         <img src="https://developers.kakao.com/assets/img/about/logos/kakaotalksharing/kakaotalk_sharing_btn_medium.png"
@@ -226,17 +159,6 @@
       </button>
     </div>
 
-  </div>
-
-  <!-- 중간 배너 광고 -->
-  <div class="ad-banner">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-5636953164692974"
-         data-ad-slot="RESULT_MID_BANNER_SLOT_ID"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
   <!-- 관련 콘텐츠 -->
@@ -261,17 +183,6 @@
     </div>
   </div>
 
-  <!-- 하단 배너 -->
-  <div class="ad-banner" style="margin-top:16px;">
-    <ins class="adsbygoogle"
-         style="display:block"
-         data-ad-client="ca-pub-5636953164692974"
-         data-ad-slot="RESULT_BOTTOM_BANNER_SLOT_ID"
-         data-ad-format="auto"
-         data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-
 </div>
 
 <script src="assets/js/hangul.js"></script>
@@ -287,67 +198,42 @@
     const g1 = params.gender1;
     const g2 = params.gender2;
 
-    // score가 URL에 없으면 직접 계산
-    let score;
-    const urlScore = new URLSearchParams(window.location.search).get('s');
-    if (urlScore !== null) {
-      score = parseInt(urlScore);
-    } else {
-      const calc = calcCompatibility(name1, name2);
-      score = calc.score;
-    }
-
     if (!name1 || !name2) {
       window.location.href = 'index.html';
       return;
     }
 
+    const urlScore = new URLSearchParams(window.location.search).get('s');
+    const score = urlScore !== null ? parseInt(urlScore) : calcCompatibility(name1, name2).score;
     const grade = getGrade(score, g1, g2);
 
-    // 데이터 저장
     resultData = { name1, name2, score, grade, g1, g2 };
 
-    // UI 렌더링
     renderResult(name1, name2, score, grade);
-
-    // 로컬 스토리지에 기록 저장
     saveHistory(name1, name2, score, grade.grade, g1, g2);
   });
 
   function renderResult(name1, name2, score, grade) {
-    // 이름
     document.getElementById('rName1').textContent = name1;
     document.getElementById('rName2').textContent = name2;
+    document.getElementById('resultTypeBadge').textContent = grade.type;
 
-    // 궁합 타입 뱃지
-    const badge = document.getElementById('resultTypeBadge');
-    badge.textContent = grade.type;
-
-    // 남녀 궁합이면 커넥터를 ♥, 우정이면 🤝
     const type = `${resultData.g1}-${resultData.g2}`;
-    const connector = document.querySelector('.connector');
     if (type === 'M-M' || type === 'F-F') {
-      connector.textContent = '🤝';
+      document.querySelector('.connector').textContent = '🤝';
     }
 
-    // 이모지
     document.getElementById('resultEmoji').textContent = grade.emoji;
 
-    // 등급
     const gradeEl = document.getElementById('resultGrade');
     gradeEl.textContent = grade.grade;
     gradeEl.style.color = grade.color;
 
-    // 설명
     document.getElementById('resultDesc').textContent = `"${grade.desc}"`;
-
-    // 카드 표시
     document.getElementById('resultCard').style.display = 'block';
 
-    // 게이지 애니메이션
     setTimeout(() => animateGauge(score, grade.color), 300);
 
-    // 점수에 따라 컨페티 or 흔들기
     if (score >= 65) {
       setTimeout(launchConfetti, 600);
     } else if (score < 30) {
@@ -357,21 +243,18 @@
     }
   }
 
-  // 게이지 바 애니메이션
   function animateGauge(score, color) {
     const bar = document.getElementById('gaugeBar');
     const scoreEl = document.getElementById('gaugeScore');
 
-    // 색상 설정
     let barColor;
-    if (score >= 65) barColor = `linear-gradient(90deg, #FF6B9D, #C77DFF)`;
-    else if (score >= 40) barColor = `linear-gradient(90deg, #FFD166, #FF9E00)`;
-    else barColor = `linear-gradient(90deg, #748DA6, #4A6275)`;
+    if (score >= 65) barColor = 'linear-gradient(90deg, #FF6B9D, #C77DFF)';
+    else if (score >= 40) barColor = 'linear-gradient(90deg, #FFD166, #FF9E00)';
+    else barColor = 'linear-gradient(90deg, #748DA6, #4A6275)';
 
     bar.style.background = barColor;
     bar.style.width = `${score}%`;
 
-    // 카운트업
     let current = 0;
     const step = score / 60;
     const counter = setInterval(() => {
@@ -384,11 +267,9 @@
     }, 25);
   }
 
-  // 컨페티 효과
   function launchConfetti() {
     const colors = ['#FF6B9D', '#C77DFF', '#48CAE4', '#FFD166', '#FF8FAB'];
     const emojis = ['💕', '✨', '🌸', '💘', '⭐'];
-
     for (let i = 0; i < 30; i++) {
       setTimeout(() => {
         const el = document.createElement('div');
@@ -398,20 +279,17 @@
         el.style.background = colors[Math.floor(Math.random() * colors.length)];
         el.style.animationDuration = `${1.5 + Math.random() * 2}s`;
         el.style.animationDelay = `${Math.random() * 0.5}s`;
-
         if (Math.random() > 0.7) {
           el.style.background = 'transparent';
           el.style.fontSize = '18px';
           el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
         }
-
         document.body.appendChild(el);
         setTimeout(() => el.remove(), 4000);
       }, i * 60);
     }
   }
 
-  // 히스토리 저장
   function saveHistory(name1, name2, score, grade, g1, g2) {
     const history = JSON.parse(localStorage.getItem('nameHistory') || '[]');
     history.unshift({ name1, name2, score, grade, g1, g2, date: new Date().toLocaleDateString('ko-KR') });
@@ -419,21 +297,17 @@
     localStorage.setItem('nameHistory', JSON.stringify(history));
   }
 
-  // 카카오 공유
   function onKakaoShare() {
     const { name1, name2, score, grade } = resultData;
     shareKakao(name1, name2, score, grade.grade, grade.emoji);
   }
 
-  // 이미지 저장
   function onSaveImage() {
     const { name1, name2, score, grade } = resultData;
-    const type = `${resultData.g1}-${resultData.g2}`;
     saveResultImage(name1, name2, score, grade.grade, grade.emoji, grade.desc, grade.type);
     showToast('이미지 저장 중... 💕');
   }
 
-  // 홈으로
   function goHome() {
     window.location.href = 'index.html';
   }
