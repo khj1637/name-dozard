@@ -36,8 +36,3 @@ const KAKAO_JS_KEY = 'YOUR_KAKAO_JS_KEY';
 
 ### 3. OG 이미지
 `assets/img/og.png` — 1200x630px 이미지 교체
-
-## Cloudflare Pages 배포
-1. GitHub에 push
-2. Cloudflare Pages → GitHub 연결
-3. name.dozard.com 커스텀 도메인 연결
