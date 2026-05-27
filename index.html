@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>이름 궁합 테스트 💕 | name.dozard.com</title>
+  <meta name="description" content="내 이름과 상대방 이름으로 궁합을 테스트해보세요! 한글 획수로 계산하는 정통 이름 궁합">
+  <meta property="og:title" content="이름 궁합 테스트 💕">
+  <meta property="og:description" content="우리 궁합 몇 %일까? 지금 바로 테스트해봐!">
+  <meta property="og:image" content="https://name.dozard.com/assets/img/og.png">
+  <meta property="og:url" content="https://name.dozard.com">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <!-- AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5636953164692974" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<!-- 파티클 컨테이너 -->
+<div class="particles" id="particles"></div>
+
+<!-- 인터스티셜 광고 오버레이 -->
+<div class="interstitial-overlay" id="interstitialOverlay">
+  <div class="interstitial-inner">
+    <div class="interstitial-timer" id="interstitialTimer">5초 후 결과 확인 가능 ⏱️</div>
+    <!-- AdSense 인터스티셜 광고 -->
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-5636953164692974"
+         data-ad-slot="INTERSTITIAL_SLOT_ID"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+    <button class="interstitial-skip" id="interstitialSkip" onclick="goToResult()">
+      결과 확인하기 💕
+    </button>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- 헤더 -->
+  <div class="header">
+    <div class="header-badge">✨ 한글 획수 정통 계산법</div>
+    <h1>이름 궁합<br>테스트 💕</h1>
+    <p class="header-sub">우리 사이 몇 %일까? 지금 바로 확인해봐!</p>
+  </div>
+
+  <!-- 상단 배너 광고 -->
+  <div class="ad-banner">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-5636953164692974"
+         data-ad-slot="TOP_BANNER_SLOT_ID"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+  <!-- 입력 카드 -->
+  <div class="card">
+    <!-- 내 이름 -->
+    <div class="section-label">👤 내 이름</div>
+    <div class="input-group">
+      <div class="input-row">
+        <input
+          type="text"
+          class="name-input"
+          id="name1"
+          placeholder="성 포함 3글자 이상"
+          maxlength="6"
+          oninput="onNameInput(1)"
+        >
+        <div class="gender-btns">
+          <button class="gender-btn active-M" id="g1M" onclick="setGender(1,'M')">👦</button>
+          <button class="gender-btn" id="g1F" onclick="setGender(1,'F')">👧</button>
+        </div>
+      </div>
+      <div class="strokes-preview" id="strokes1"></div>
+    </div>
+
+    <!-- VS -->
+    <div class="vs-divider">
+      <span class="vs-badge">VS</span>
+    </div>
+
+    <!-- 상대 이름 -->
+    <div class="section-label">💝 상대 이름</div>
+    <div class="input-group">
+      <div class="input-row">
+        <input
+          type="text"
+          class="name-input"
+          id="name2"
+          placeholder="성 포함 3글자 이상"
+          maxlength="6"
+          oninput="onNameInput(2)"
+        >
+        <div class="gender-btns">
+          <button class="gender-btn" id="g2M" onclick="setGender(2,'M')">👦</button>
+          <button class="gender-btn active-F" id="g2F" onclick="setGender(2,'F')">👧</button>
+        </div>
+      </div>
+      <div class="strokes-preview" id="strokes2"></div>
+    </div>
+
+    <!-- 궁합 타입 표시 -->
+    <div class="compat-type" id="compatType">💕 연애 궁합</div>
+
+    <!-- 계산 버튼 -->
+    <button class="calc-btn" id="calcBtn" onclick="startCalc()" disabled>
+      ✨ 궁합 계산하기
+    </button>
+  </div>
+
+  <!-- 계산 애니메이션 섹션 -->
+  <div class="animation-section" id="animSection">
+    <div class="loading-text" id="loadingText">
+      <span>운명의 실을 계산하는 중... 🧵</span>
+    </div>
+    <div class="calc-process" id="calcProcess"></div>
+  </div>
+
+  <!-- 결과보기 버튼 -->
+  <div class="result-btn-wrap" id="resultBtnWrap">
+    <button class="result-btn" onclick="showInterstitial()">
+      💕 결과 확인하기
+    </button>
+    <p style="margin-top:12px; font-size:12px; color:#aaa;">잠깐! 광고를 보고 결과를 확인하세요 😊</p>
+  </div>
+
+  <!-- 하단 배너 광고 -->
+  <div class="ad-banner" style="margin-top:16px;">
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="ca-pub-5636953164692974"
+         data-ad-slot="BOTTOM_BANNER_SLOT_ID"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  </div>
+
+</div>
+
+<script src="assets/js/hangul.js"></script>
+<script>
+  // 상태
+  let gender1 = 'M';
+  let gender2 = 'F';
+  let calcResult = null;
+
+  const LOADING_TEXTS = [
+    '운명의 실을 계산하는 중... 🧵',
+    '두 사람의 기운을 분석하는 중... ✨',
+    '전생 기록을 열람하는 중... 📜',
+    '우주의 별자리를 확인하는 중... 🌌',
+    '두근두근 계산 중... 💓'
+  ];
+
+  // URL 파라미터로 이름 자동 입력
+  window.addEventListener('DOMContentLoaded', () => {
+    const params = getUrlParams();
+    if (params.name1) {
+      document.getElementById('name1').value = params.name1;
+      setGender(1, params.gender1);
+      onNameInput(1);
+    }
+    if (params.name2) {
+      document.getElementById('name2').value = params.name2;
+      setGender(2, params.gender2);
+      onNameInput(2);
+    }
+    if (params.name1 && params.name2) {
+      setTimeout(startCalc, 500);
+    }
+  });
+
+  // 성별 선택
+  function setGender(person, g) {
+    if (person === 1) {
+      gender1 = g;
+      document.getElementById('g1M').className = 'gender-btn' + (g === 'M' ? ' active-M' : '');
+      document.getElementById('g1F').className = 'gender-btn' + (g === 'F' ? ' active-F' : '');
+    } else {
+      gender2 = g;
+      document.getElementById('g2M').className = 'gender-btn' + (g === 'M' ? ' active-M' : '');
+      document.getElementById('g2F').className = 'gender-btn' + (g === 'F' ? ' active-F' : '');
+    }
+    updateCompatType();
+  }
+
+  // 궁합 타입 업데이트
+  function updateCompatType() {
+    const el = document.getElementById('compatType');
+    const type = `${gender1}-${gender2}`;
+    if (type === 'M-F' || type === 'F-M') {
+      el.textContent = '💕 연애 궁합';
+      el.style.background = 'rgba(255,107,157,0.1)';
+      el.style.color = '#FF6B9D';
+    } else if (type === 'M-M') {
+      el.textContent = '👬 우정 궁합';
+      el.style.background = 'rgba(72,202,228,0.1)';
+      el.style.color = '#0077B6';
+    } else {
+      el.textContent = '👭 우정 궁합';
+      el.style.background = 'rgba(199,125,255,0.1)';
+      el.style.color = '#C77DFF';
+    }
+  }
+
+  // 이름 입력 핸들러
+  function onNameInput(person) {
+    const input = document.getElementById(`name${person}`);
+    const preview = document.getElementById(`strokes${person}`);
+    const name = input.value.replace(/[^가-힣]/g, '');
+    input.value = name;
+
+    // 획수 미리보기
+    preview.innerHTML = '';
+    if (name.length > 0) {
+      const strokes = getNameStrokes(name);
+      name.split('').forEach((char, i) => {
+        const chip = document.createElement('div');
+        chip.className = 'stroke-chip';
+        chip.innerHTML = `<span class="char">${char}</span>${strokes[i]}`;
+        preview.appendChild(chip);
+      });
+    }
+
+    // 버튼 활성화 체크
+    checkCalcBtn();
+  }
+
+  function checkCalcBtn() {
+    const n1 = document.getElementById('name1').value;
+    const n2 = document.getElementById('name2').value;
+    const btn = document.getElementById('calcBtn');
+    btn.disabled = !(n1.length >= 3 && n2.length >= 3);
+  }
+
+  // 계산 시작
+  function startCalc() {
+    const name1 = document.getElementById('name1').value;
+    const name2 = document.getElementById('name2').value;
+    if (name1.length < 3 || name2.length < 3) return;
+
+    calcResult = calcCompatibility(name1, name2);
+
+    // 애니메이션 섹션 표시
+    document.getElementById('animSection').classList.add('show');
+    document.getElementById('resultBtnWrap').classList.remove('show');
+
+    // 스크롤
+    setTimeout(() => {
+      document.getElementById('animSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+
+    // 로딩 텍스트 변경
+    let textIdx = 0;
+    const loadingEl = document.getElementById('loadingText');
+    const textInterval = setInterval(() => {
+      textIdx = (textIdx + 1) % LOADING_TEXTS.length;
+      loadingEl.innerHTML = `<span>${LOADING_TEXTS[textIdx]}</span>`;
+    }, 800);
+
+    // 계산 과정 렌더링
+    renderCalcProcess(calcResult.steps, name1, name2, () => {
+      clearInterval(textInterval);
+      loadingEl.innerHTML = '<span>계산 완료! 결과를 확인해봐 💕</span>';
+      document.getElementById('resultBtnWrap').classList.add('show');
+    });
+  }
+
+  // 계산 과정 애니메이션 렌더링
+  function renderCalcProcess(steps, name1, name2, onDone) {
+    const container = document.getElementById('calcProcess');
+    container.innerHTML = '';
+
+    let rowIdx = 0;
+    const totalRows = steps.length * 2 - 1;
+
+    function renderNextRow() {
+      if (rowIdx >= steps.length) {
+        setTimeout(onDone, 300);
+        return;
+      }
+
+      const step = steps[rowIdx];
+
+      // 숫자 행
+      const numRow = document.createElement('div');
+      numRow.className = 'calc-row';
+      numRow.style.marginBottom = '0';
+
+      step.forEach((num, i) => {
+        const el = document.createElement('div');
+        el.className = 'calc-num';
+
+        // 첫 번째 행 — 이름별 색상
+        if (rowIdx === 0) {
+          const n1len = name1.length;
+          el.classList.add(i < n1len ? 'name1' : 'name2');
+        }
+        // 마지막 행 하이라이트
+        if (rowIdx === steps.length - 1) {
+          el.classList.add('highlight');
+        }
+
+        el.textContent = num;
+        numRow.appendChild(el);
+      });
+
+      container.appendChild(numRow);
+      setTimeout(() => numRow.classList.add('visible'), 50);
+
+      rowIdx++;
+
+      // 마지막 행이 아니면 브라켓 추가
+      if (rowIdx < steps.length) {
+        setTimeout(() => {
+          const bracketRow = document.createElement('div');
+          bracketRow.className = 'bracket-row';
+
+          for (let i = 0; i < step.length - 1; i++) {
+            const item = document.createElement('div');
+            item.className = 'bracket-item';
+            const line = document.createElement('div');
+            line.className = 'bracket-line';
+            item.appendChild(line);
+            bracketRow.appendChild(item);
+
+            // 마지막 아이템 여백
+            if (i < step.length - 2) {
+              const spacer = document.createElement('div');
+              spacer.className = 'bracket-item';
+              bracketRow.appendChild(spacer);
+            }
+          }
+
+          container.appendChild(bracketRow);
+          setTimeout(() => bracketRow.classList.add('visible'), 50);
+          setTimeout(renderNextRow, 350);
+        }, 300);
+      } else {
+        setTimeout(renderNextRow, 300);
+      }
+    }
+
+    renderNextRow();
+  }
+
+  // 인터스티셜 광고 표시
+  function showInterstitial() {
+    const overlay = document.getElementById('interstitialOverlay');
+    overlay.classList.add('show');
+
+    let count = 5;
+    const timerEl = document.getElementById('interstitialTimer');
+    const skipBtn = document.getElementById('interstitialSkip');
+
+    const countdown = setInterval(() => {
+      count--;
+      timerEl.textContent = `${count}초 후 결과 확인 가능 ⏱️`;
+      if (count <= 0) {
+        clearInterval(countdown);
+        timerEl.textContent = '결과를 확인할 수 있어요! 💕';
+        skipBtn.classList.add('show');
+      }
+    }, 1000);
+  }
+
+  // 결과 페이지로 이동
+  function goToResult() {
+    const name1 = document.getElementById('name1').value;
+    const name2 = document.getElementById('name2').value;
+    const score = calcResult.score;
+    window.location.href = `result.html?a=${encodeURIComponent(name1)}&b=${encodeURIComponent(name2)}&g1=${gender1}&g2=${gender2}&s=${score}`;
+  }
+</script>
+</body>
+</html>
