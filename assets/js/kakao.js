@@ -1,6 +1,6 @@
 // 카카오톡 공유
 // Kakao Developers에서 발급받은 JavaScript 키를 입력하세요
-const KAKAO_JS_KEY = 'YOUR_KAKAO_JS_KEY'; // ← 여기에 키 입력
+const KAKAO_JS_KEY = 'b90689be3f8793d0fc5a954cfe129632'; // ← 여기에 키 입력
 
 function initKakao() {
   if (typeof Kakao !== 'undefined' && !Kakao.isInitialized()) {
