@@ -20,11 +20,11 @@ function shareKakao(name1, name2, score, grade, emoji) {
     objectType: 'feed',
     content: {
       title: `${name1} ♥ ${name2} 궁합은 ${score}%! ${emoji}`,
-      description: `${grade} — 너도 해봐 💕`,
+      description: `${grade} — 나도 해보러 가기 👉 name.dozard.com`,
       imageUrl: 'https://name.dozard.com/assets/img/og.png',
       link: {
-        mobileWebUrl: url,
-        webUrl: url,
+        mobileWebUrl: 'https://name.dozard.com',
+        webUrl: 'https://name.dozard.com',
       },
     },
     buttons: [
@@ -37,7 +37,6 @@ function shareKakao(name1, name2, score, grade, emoji) {
       },
     ],
   });
-}
 
 function copyLink(name1, name2) {
   const url = `https://name.dozard.com/?a=${encodeURIComponent(name1)}&b=${encodeURIComponent(name2)}`;
