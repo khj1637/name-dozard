@@ -238,6 +238,10 @@
   });
 
   function renderResult(name1, name2, score, grade) {
+    const isCoupleType = (resultData.g1 !== resultData.g2);
+    document.title = isCoupleType
+      ? `${name1} ♥ ${name2} 궁합 ${score}% ${grade.emoji} | 이름궁합테스트`
+      : `${name1} & ${name2} 우정테스트 ${score}% ${grade.emoji} | 이름궁합테스트`;
     document.getElementById('rName1').textContent = name1;
     document.getElementById('rName2').textContent = name2;
     document.getElementById('resultTypeBadge').textContent = grade.type;
@@ -322,8 +326,8 @@
   }
 
   function onKakaoShare() {
-    const { name1, name2, score, grade } = resultData;
-    shareKakao(name1, name2, score, grade.grade, grade.emoji);
+    const { name1, name2, score, grade, g1, g2 } = resultData;
+    shareKakao(name1, name2, score, grade.grade, grade.emoji, g1, g2);
   }
 
   function onSaveImage() {

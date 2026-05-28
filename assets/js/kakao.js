@@ -6,7 +6,7 @@ function initKakao() {
   }
 }
 
-function shareKakao(name1, name2, score, grade, emoji) {
+function shareKakao(name1, name2, score, grade, emoji, g1, g2) {
   initKakao();
 
   if (typeof Kakao === 'undefined') {
@@ -14,13 +14,24 @@ function shareKakao(name1, name2, score, grade, emoji) {
     return;
   }
 
+  const isCoupleType = (g1 !== g2);
   const url = `https://name.dozard.com/?a=${encodeURIComponent(name1)}&b=${encodeURIComponent(name2)}`;
+
+  const titleText = isCoupleType
+    ? `${name1} ♥ ${name2} 궁합은 ${score}%! ${emoji}`
+    : `${name1} & ${name2} 우정 테스트 결과는 ${score}%! ${emoji}`;
+
+  const descText = isCoupleType
+    ? `${grade} — 나도 해보러 가기 👉 name.dozard.com`
+    : `${grade} — 우리 우정 몇 %? 나도 해봐 👉 name.dozard.com`;
+
+  const btnTitle = isCoupleType ? '나도 궁합 테스트하기 💕' : '나도 우정 테스트하기 👊';
 
   Kakao.Share.sendDefault({
     objectType: 'feed',
     content: {
-      title: `${name1} ♥ ${name2} 궁합은 ${score}%! ${emoji}`,
-      description: `${grade} — 나도 해보러 가기 👉 name.dozard.com`,
+      title: titleText,
+      description: descText,
       imageUrl: 'https://name.dozard.com/assets/img/og.png',
       link: {
         mobileWebUrl: 'https://name.dozard.com',
@@ -29,7 +40,7 @@ function shareKakao(name1, name2, score, grade, emoji) {
     },
     buttons: [
       {
-        title: '나도 테스트하기 💕',
+        title: btnTitle,
         link: {
           mobileWebUrl: 'https://name.dozard.com',
           webUrl: 'https://name.dozard.com',
@@ -37,6 +48,7 @@ function shareKakao(name1, name2, score, grade, emoji) {
       },
     ],
   });
+}
 
 function copyLink(name1, name2) {
   const url = `https://name.dozard.com/?a=${encodeURIComponent(name1)}&b=${encodeURIComponent(name2)}`;
@@ -70,6 +82,7 @@ function showToast(msg) {
     font-weight: 600;
     z-index: 9999;
     white-space: nowrap;
+    animation: fadeIn 0.3s ease;
   `;
   toast.textContent = msg;
   document.body.appendChild(toast);
