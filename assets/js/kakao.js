@@ -1,6 +1,4 @@
-// 카카오톡 공유
-// Kakao Developers에서 발급받은 JavaScript 키를 입력하세요
-const KAKAO_JS_KEY = '1927099e19cf557b5352d571f3f07414'; // ← 여기에 키 입력
+const KAKAO_JS_KEY = '1927099e19cf557b5352d571f3f07414';
 
 function initKakao() {
   if (typeof Kakao !== 'undefined' && !Kakao.isInitialized()) {
@@ -12,20 +10,17 @@ function shareKakao(name1, name2, score, grade, emoji) {
   initKakao();
 
   if (typeof Kakao === 'undefined') {
-    // 카카오 SDK 없으면 링크 복사로 대체
-    copyLink(name1, name2, score, grade);
+    copyLink(name1, name2);
     return;
   }
 
   const url = `https://name.dozard.com/?a=${encodeURIComponent(name1)}&b=${encodeURIComponent(name2)}`;
-  const title = `${name1} ♥ ${name2} 궁합은 ${score}%! ${emoji}`;
-  const desc = `${grade} — 우리 궁합 결과 나왔어! 너도 해봐 💕`;
 
   Kakao.Share.sendDefault({
     objectType: 'feed',
     content: {
-      title: title,
-      description: desc,
+      title: `${name1} ♥ ${name2} 궁합은 ${score}%! ${emoji}`,
+      description: `${grade} — 너도 해봐 💕`,
       imageUrl: 'https://name.dozard.com/assets/img/og.png',
       link: {
         mobileWebUrl: url,
@@ -44,8 +39,7 @@ function shareKakao(name1, name2, score, grade, emoji) {
   });
 }
 
-// 링크 복사 (카카오 대체)
-function copyLink(name1, name2, score, grade) {
+function copyLink(name1, name2) {
   const url = `https://name.dozard.com/?a=${encodeURIComponent(name1)}&b=${encodeURIComponent(name2)}`;
   if (navigator.clipboard) {
     navigator.clipboard.writeText(url).then(() => {
@@ -62,7 +56,6 @@ function copyLink(name1, name2, score, grade) {
   }
 }
 
-// 토스트 메시지
 function showToast(msg) {
   const toast = document.createElement('div');
   toast.style.cssText = `
@@ -78,7 +71,6 @@ function showToast(msg) {
     font-weight: 600;
     z-index: 9999;
     white-space: nowrap;
-    animation: fadeIn 0.3s ease;
   `;
   toast.textContent = msg;
   document.body.appendChild(toast);
