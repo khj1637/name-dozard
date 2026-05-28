@@ -131,18 +131,7 @@
 
 <div class="particles" id="particles"></div>
 
-<!-- 인터스티셜 오버레이 -->
-<div class="interstitial-overlay" id="interstitialOverlay">
-  <div class="interstitial-inner">
-    <div class="interstitial-timer" id="interstitialTimer">5초 후 결과 확인 가능 ⏱️</div>
-    <div style="text-align:center; padding:40px 20px; color:#bbb; font-size:15px; line-height:1.8;">
-      ✨ 잠깐만요!<br>결과를 불러오는 중이에요 💕
-    </div>
-    <button class="interstitial-skip" id="interstitialSkip" onclick="goToResult()">
-      💕 결과 확인하기
-    </button>
-  </div>
-</div>
+
 
 <div class="container">
 
@@ -471,22 +460,8 @@
   }
 
   function showInterstitial() {
-    const overlay = document.getElementById('interstitialOverlay');
-    overlay.classList.add('show');
-    let count = 5;
-    const timerEl = document.getElementById('interstitialTimer');
-    const skipBtn = document.getElementById('interstitialSkip');
-
-    const countdown = setInterval(() => {
-      count--;
-      timerEl.textContent = `${count}초 후 결과 확인 가능 ⏱️`;
-      if (count <= 0) {
-        clearInterval(countdown);
-        timerEl.textContent = '결과를 확인할 수 있어요! 💕';
-        skipBtn.classList.add('show');
-      }
-    }, 1000);
-  }
+  goToResult();
+}
 
   function goToResult() {
     const name1 = document.getElementById('name1').value.replace(/[^가-힣]/g, '');
