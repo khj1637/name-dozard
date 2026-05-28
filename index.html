@@ -92,6 +92,10 @@
       display: none;
     }
     .input-hint.show { display: block; }
+    @keyframes questionPulse {
+      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,107,157,0.4); }
+      50% { transform: scale(1.15); box-shadow: 0 0 0 8px rgba(255,107,157,0); }
+    }
   </style>
 </head>
 <body>
@@ -103,7 +107,7 @@
   <div class="interstitial-inner">
     <div class="interstitial-timer" id="interstitialTimer">5초 후 결과 확인 가능 ⏱️</div>
     <div style="text-align:center; padding:40px 20px; color:#bbb; font-size:15px; line-height:1.8;">
-      ✨ 잠깐만요!<br>광고를 보고 결과를 확인해요 😊
+      ✨ 잠깐만요!<br>결과를 불러오는 중이에요 💕
     </div>
     <button class="interstitial-skip" id="interstitialSkip" onclick="goToResult()">
       💕 결과 확인하기
@@ -191,7 +195,7 @@
     <button class="result-btn" onclick="showInterstitial()">
       💕 결과 확인하기
     </button>
-    <p style="margin-top:12px; font-size:12px; color:#aaa;">잠깐! 광고를 보고 결과를 확인하세요 😊</p>
+
   </div>
 
 </div>
@@ -365,8 +369,11 @@
 
     renderCalcProcess(calcResult.steps, name1, name2, () => {
       clearInterval(textInterval);
-      loadingEl.innerHTML = '<span>계산 완료! 결과를 확인해봐 💕</span>';
+      loadingEl.innerHTML = '<span>마지막 숫자가 숨겨졌어요! 결과를 확인해봐 🔥</span>';
       document.getElementById('resultBtnWrap').classList.add('show');
+      document.querySelectorAll('.calc-num.highlight').forEach(el => {
+        el.style.animation = 'questionPulse 1s ease-in-out infinite';
+      });
       setTimeout(() => {
         document.getElementById('resultBtnWrap').scrollIntoView({ behavior: 'smooth', block: 'center' });
       }, 200);
@@ -396,8 +403,10 @@
         }
         if (rowIdx === steps.length - 1) {
           el.classList.add('highlight');
+          el.textContent = '?';
+        } else {
+          el.textContent = num;
         }
-        el.textContent = num;
         numRow.appendChild(el);
       });
 
