@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /assets/
+
+Sitemap: https://name.dozard.com/sitemap.xml
