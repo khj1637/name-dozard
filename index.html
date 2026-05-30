@@ -384,7 +384,7 @@
       loadingEl.innerHTML = `<span>${LOADING_TEXTS[textIdx]}</span>`;
     }, 800);
 
-    renderCalcProcess(calcResult.steps, name1, name2, () => {
+    renderCalcProcess(calcResult.steps, calcResult.origin, () => {
       clearInterval(textInterval);
       loadingEl.innerHTML = '<span>마지막 숫자가 숨겨졌어요! 결과를 확인해봐 🔥</span>';
       document.getElementById('resultBtnWrap').classList.add('show');
@@ -397,7 +397,7 @@
     });
   }
 
-  function renderCalcProcess(steps, name1, name2, onDone) {
+  function renderCalcProcess(steps, origin, onDone) {
     const container = document.getElementById('calcProcess');
     container.innerHTML = '';
     let rowIdx = 0;
@@ -416,7 +416,8 @@
         const el = document.createElement('div');
         el.className = 'calc-num';
         if (rowIdx === 0) {
-          el.classList.add(i < name1.length ? 'name1' : 'name2');
+          // 교차 배열: origin 배열로 어느 이름 글자인지 구분
+          el.classList.add(origin[i] === 1 ? 'name1' : 'name2');
         }
         if (rowIdx === steps.length - 1) {
           el.classList.add('highlight');

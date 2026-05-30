@@ -72,11 +72,32 @@ function getNameStrokes(name) {
   return name.split('').map(char => getCharStrokes(char));
 }
 
+// 두 이름의 글자를 교차(지그재그)로 병합
+// 예: 김혁진 + 우선영 → 김 우 혁 선 진 영
+// 길이가 다르면 교차 후 남는 글자는 뒤에 그대로 이어붙임
+function interleave(arr1, arr2) {
+  const merged = [];
+  const origin = []; // 각 원소가 어느 이름에서 왔는지 (1 또는 2)
+  const maxLen = Math.max(arr1.length, arr2.length);
+  for (let i = 0; i < maxLen; i++) {
+    if (i < arr1.length) { merged.push(arr1[i]); origin.push(1); }
+    if (i < arr2.length) { merged.push(arr2[i]); origin.push(2); }
+  }
+  return { merged, origin };
+}
+
 // 궁합 계산 핵심 로직
 function calcCompatibility(name1, name2) {
   const strokes1 = getNameStrokes(name1);
   const strokes2 = getNameStrokes(name2);
-  const combined = [...strokes1, ...strokes2];
+
+  // 글자를 교차로 병합 (김우혁선진영 방식)
+  const interleaved = interleave(strokes1, strokes2);
+  const combined = interleaved.merged;
+  const origin = interleaved.origin;
+
+  // 교차된 글자 순서도 함께 저장 (화면 표시용)
+  const mergedChars = interleave(name1.split(''), name2.split('')).merged;
 
   // 단계별 계산 과정 저장
   const steps = [combined];
@@ -98,6 +119,8 @@ function calcCompatibility(name1, name2) {
     strokes1,
     strokes2,
     steps,
+    origin,        // 첫 줄 각 글자의 출처(1=name1, 2=name2) — 교차 색상용
+    mergedChars,   // 교차된 글자 순서 (예: 김우혁선진영)
     score: finalScore
   };
 }
